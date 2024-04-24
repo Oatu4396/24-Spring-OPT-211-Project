@@ -2,7 +2,7 @@
 
 ## How to create/test your apertures
 
-Create a file name besides your aperture function's name. Then, put the following code to the beginning of the file:
+Create a file with the same name of your aperture function's name. Then, put the following code to the beginning of the file:
 
 ``` matlab
 figure
