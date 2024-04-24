@@ -13,3 +13,6 @@ axis([0 5000 0 5000]) % Set axes limits to size of aperture field
 ```
 
 Remember change the function inside imagesc() to your aperture function's name.
+
+The file is named test.m inside Aperture folder which you can directly use it by only change the function name.
+Please DON'T commit any changes on this file to the repository.
