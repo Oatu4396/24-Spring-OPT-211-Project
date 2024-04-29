@@ -25,3 +25,5 @@ colormap gray;
 axis equal;
 axis([0 apl 0 apl]);
 title('The Circular Aperture');
+
+end;
