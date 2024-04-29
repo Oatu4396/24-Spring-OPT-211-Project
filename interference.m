@@ -1,10 +1,10 @@
 function interference()
-    % Create the aperture choose UI
+    % Create the aperture selection UI
     fig = uifigure('Name', 'Apertures', 'Position', [100 100 400 150]);
     buttonGrid = uigridlayout(fig, [2, 5]);
 
     % Populate the button grid
-    buttons = cell(2, 5);  % Create a cell array to store button handles
+    buttons = cell(2, 5);  % Create a cell array to store buttons
     for i = 1:2
         for j = 1:5
             buttons{i,j} = uibutton(buttonGrid);
@@ -32,12 +32,21 @@ end
 
 %% Interference 
 function fourierInterference(ap)
-    I= ; % I DONT KNOW HOW DO CALCULATE THE INTENSITY
+    I=(abs(fftshift(fft2(ap))).^2); % Calculate intensity
+    I=I.^0.3; % Adjust brightness
     draw(I);
     hold on
-    title('asdfasdf');
+    % Put plot parameters here
+    title('Normal');
+
     hold off
+    
     draw(I(2376:2626,2376:2626));
+    hold on
+    % Put plot parameters here
+    title('Enlarged');
+
+    hold off
 end
 
 %% Draw Aperture Function
