@@ -1,4 +1,5 @@
 % Draw A Circular Ring Aperture:
+function ap = qiuranRingAP
 % Define Aperture field
 apl = 5000; % Size of the aperture field
 ap = zeros(apl); % Define actual aperture plane
