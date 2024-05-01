@@ -4,7 +4,6 @@ function ap = ellipseAP
     apl=5000; % Size of the aperture field 
     ap=zeros(apl); % Define actual aperture plane
 
-
     % Define ellipse aperture
     r=170;a=0.5;b=1.3;
     [xx, yy] = meshgrid(1:apl, 1:apl);
