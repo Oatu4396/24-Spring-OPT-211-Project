@@ -12,15 +12,3 @@ function ap = ellipseAP
     ap(distances <= r)=1;
     return
 end
-
-    % Plot the aperture field
-    figure
-    hold on
-    imagesc(ap)
-    colormap gray % Set the color of the aperture field plot
-    axis equal % Set the display scale of the axes
-    axis([0 apl 0 apl]) % Set axes limits to size of aperture field
-    set(gca, 'YDir', 'reverse'); % Get current axis and change direction of y-axis
-    xlabel('x-axis [pixels]','FontSize', 16)
-    ylabel('y-axis [pixels]','FontSize', 16)
-    title('double slit aperture','FontSize', 18)
