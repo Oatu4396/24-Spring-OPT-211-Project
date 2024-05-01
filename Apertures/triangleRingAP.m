@@ -1,4 +1,4 @@
-function ap = TriangularRingAP
+function ap = triangleRingAP
     % Define Aperture field
     apl = 5000; % Size of the aperture field
     ap = zeros(apl); % Define actual aperture plane
@@ -30,14 +30,5 @@ function ap = TriangularRingAP
     in_inner_triangle = inpolygon(X, Y, inner_vertices(:,1), inner_vertices(:,2));
     
     ap(in_outer_triangle & ~in_inner_triangle) = 1;
-    
-    % Display the aperture
-    figure;
-    imagesc(ap);
-    colormap gray;
-    axis equal;
-    axis tight;
-    title('The Triangular Ring Aperture');
-  
     return
 end

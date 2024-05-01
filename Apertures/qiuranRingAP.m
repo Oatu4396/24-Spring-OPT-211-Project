@@ -17,14 +17,5 @@ function ap = qiuranRingAP
     distances = sqrt((X - circle_xcenter).^2 + (Y - circle_ycenter).^2);
     
     ap(r2 <= distances & distances <= r1) = 1;
-    
-    
-    figure;
-    imagesc(ap);
-    colormap gray;
-    axis equal;
-    axis([0 apl 0 apl]);
-    title('The Circular Aperture');
-  
     return
 end

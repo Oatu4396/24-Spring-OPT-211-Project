@@ -17,14 +17,5 @@ function ap = circleAP
     
     % Set the points within the specified radius to 1
     ap(distances <= r) = 1;
-    
-    
-    figure;
-    imagesc(ap);
-    colormap gray;
-    axis equal;
-    axis([0 apl 0 apl]);
-    title('The Circular Aperture');
-    
     return
 end

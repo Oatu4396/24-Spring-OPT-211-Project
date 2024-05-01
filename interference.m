@@ -1,3 +1,5 @@
+%% Aperture Selection UI
+
 function interference()
     % Create the aperture selection UI
     fig = uifigure('Name', 'Apertures', 'Position', [100 100 400 150]);
@@ -24,17 +26,36 @@ function interference()
     buttons{1,3}.Text = 'Double Slit';
     buttons{1,3}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(doubleSlitAP());
-    % circle Aperture
-    buttons{1,3}.Text = 'Circle';
-    buttons{1,3}.ButtonPushedFcn = @(btn,event) ...
+    % circular Aperture
+    buttons{1,4}.Text = 'Circlar';
+    buttons{1,4}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(circleAP());
+    % triangular Aperture
+    buttons{1,5}.Text = 'Triangular';
+    buttons{1,5}.ButtonPushedFcn = @(btn,event) ...
+        fourierInterference(triangleAP());
+    % ring Aperture
+    buttons{2,1}.Text = 'Ring';
+    buttons{2,1}.ButtonPushedFcn = @(btn,event) ...
+        fourierInterference(qiuranRingAP());
+    % grid Aperture
+    buttons{2,2}.Text = 'Grid';
+    buttons{2,2}.ButtonPushedFcn = @(btn,event) ...
+        fourierInterference(gridAP());
+    % triangular Aperture
+    buttons{2,3}.Text = 'Triangular Ring';
+    buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
+        fourierInterference(triangleRingAP());
+    % mengru's AP (pending)
+    buttons{2,4}.Text = 'Null';
     % Quit button
     buttons{2,5}.Text = 'Quit';
     buttons{2,5}.ButtonPushedFcn = @(btn,event) ...
         delete(fig);
 end
 
-%% Interference 
+%% Interference Calculation & Plot
+
 function fourierInterference(ap)
     I=(abs(fftshift(fft2(ap))).^2); % Calculate intensity
     I=I.^0.3; % Adjust brightness
@@ -53,8 +74,8 @@ function fourierInterference(ap)
     hold off
 end
 
-%% Draw Aperture Function
-%  Only for test
+%% Plot Function
+
 function draw(pattern)
     % Plot the aperture field
     figure
@@ -66,6 +87,7 @@ function draw(pattern)
 end
 
 %% Apertures
+
 function ap = squareAP
     apl=5000; % Size of the aperture field
     ap=zeros(apl); % Define actual aperture plane
@@ -134,19 +156,55 @@ function ap = circleAP
     
     % Set the points within the specified radius to 1
     ap(distances <= r) = 1;
-    
-    
-    figure;
-    imagesc(ap);
-    colormap gray;
-    axis equal;
-    axis([0 apl 0 apl]);
-    title('The Circular Aperture');
-    
     return
 end
 
-function ap = tianqiaoAP
+function ap = triangleAP
+    % Define the size of the aperture field
+    fieldSize = 5000;
+    ap = zeros(fieldSize, fieldSize);
+    
+    % Define the length of the side of the equilateral triangle
+    sideLength = 900;
+    
+    % Calculate the height of the triangle
+    triangleHeight = (sqrt(3)/2) * sideLength;
+    
+    % Find the center of the field
+    centerX = fieldSize / 2;
+    centerY = fieldSize / 2;
+    
+    % Calculate the vertices of the triangle
+    % Vertex A (top vertex)
+    Ax = centerX;
+    Ay = centerY - (triangleHeight / 2);
+    
+    % Vertex B (bottom left)
+    Bx = centerX - (sideLength / 2);
+    By = centerY + (triangleHeight / 2);
+    
+    % Vertex C (bottom right)
+    Cx = centerX + (sideLength / 2);
+    Cy = centerY + (triangleHeight / 2);
+    
+    % Scan each pixel in the field to determine if it lies within the triangle
+    for x = 1:fieldSize
+        for y = 1:fieldSize
+            % Use the barycentric coordinate method or half-plane method to test
+            % if the point lies within the triangle defined by A, B, and C
+            b1 = sign(x * (Ay - By) + y * (Bx - Ax) + Ax * By - Ay * Bx) < 0;
+            b2 = sign(x * (By - Cy) + y * (Cx - Bx) + Bx * Cy - By * Cx) < 0;
+            b3 = sign(x * (Cy - Ay) + y * (Ax - Cx) + Cx * Ay - Cy * Ax) < 0;
+    
+            % If the point is within the triangle, set it to 1
+            if ((b1 == b2) && (b2 == b3))
+                ap(y, x) = 1;  % MATLAB uses y,x for row,column indexing
+            end
+        end
+    end
+end
+
+function ap = gridAP
     apl=5000; % Size of the aperture field
     ap=zeros(apl); % Define actual aperture plane
     w=200; % Define square length
@@ -191,6 +249,41 @@ function ap = tianqiaoAP
     return
 end
 
+function ap = triangleRingAP
+    % Define Aperture field
+    apl = 5000; % Size of the aperture field
+    ap = zeros(apl); % Define actual aperture plane
+  
+    % Define the center and the side lengths for the triangles
+    triangle_center = [apl / 2, apl / 2];
+    sideLength_outer = 900; % Side length of the outer triangle
+    sideLength_inner = 600; % Side length of the inner triangle
+    
+    % Define vertices for the outer triangle
+    outer_vertices = [
+        triangle_center(1), triangle_center(2) - (sqrt(3)/3)*sideLength_outer; % Top vertex
+        triangle_center(1) - sideLength_outer/2, triangle_center(2) + (sqrt(3)/6)*sideLength_outer; % Bottom left vertex
+        triangle_center(1) + sideLength_outer/2, triangle_center(2) + (sqrt(3)/6)*sideLength_outer; % Bottom right vertex
+    ];
+    
+    % Define vertices for the inner triangle
+    inner_vertices = [
+        triangle_center(1), triangle_center(2) - (sqrt(3)/3)*sideLength_inner; % Top vertex
+        triangle_center(1) - sideLength_inner/2, triangle_center(2) + (sqrt(3)/6)*sideLength_inner; % Bottom left vertex
+        triangle_center(1) + sideLength_inner/2, triangle_center(2) + (sqrt(3)/6)*sideLength_inner; % Bottom right vertex
+    ];
+    
+    % Create a grid of (x,y) coordinates
+    [X, Y] = meshgrid(1:apl, 1:apl);
+    
+    % Check if each point is inside the outer triangle but outside the inner triangle
+    in_outer_triangle = inpolygon(X, Y, outer_vertices(:,1), outer_vertices(:,2));
+    in_inner_triangle = inpolygon(X, Y, inner_vertices(:,1), inner_vertices(:,2));
+    
+    ap(in_outer_triangle & ~in_inner_triangle) = 1;
+    return
+end
+
 function ap = qiuranRingAP
     % Define Aperture field
     apl = 5000; % Size of the aperture field
@@ -209,14 +302,5 @@ function ap = qiuranRingAP
     distances = sqrt((X - circle_xcenter).^2 + (Y - circle_ycenter).^2);
     
     ap(r2 <= distances & distances <= r1) = 1;
-    
-    
-    figure;
-    imagesc(ap);
-    colormap gray;
-    axis equal;
-    axis([0 apl 0 apl]);
-    title('The Circular Aperture');
-  
     return
 end
