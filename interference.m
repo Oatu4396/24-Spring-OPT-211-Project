@@ -57,11 +57,11 @@ end
 %% Interference Calculation & Plot
 
 function fourierInterference(ap,apName)
-    I = (abs(fftshift(fft2(ap))).^2); % Calculate intensity
+    I = abs(fftshift(fft2(ap))).^2; % Calculate intensity
     centeredI = I(2376:2626,2376:2626);
 
-    brightI = I.^0.3; % Adjust brightness
-    brightCenteredI = centeredI.^0.3;
+    brightI = I.^0.25; % Adjust brightness
+    brightCenteredI = centeredI.^0.25;
 
     % Draw Full-Field Far Field Diffraction Pattern
     draw(brightI);
@@ -106,9 +106,11 @@ function crossSection(pattern)
     sideLength = size(pattern(:,1));
     x = 1:1:sideLength(1);
     y = pattern(sideLength(1),:);
-    plot(x,y);
+    plot(x,y,LineWidth=1);
     
     xlim([0 sideLength(1)]);
+    xlabel('Position [pixels]')
+    ylabel('Intensity [Arb. Units]')
 end
 
 %% Apertures
