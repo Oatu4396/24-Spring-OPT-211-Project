@@ -45,5 +45,5 @@ end
 imagesc(aperture);
 colormap gray;
 axis equal;
-axis off;  % Turn off the axis for a cleaner look
-title('Equilateral Triangle Aperture');
+axis tight; % Ensure there are no extra white space around the image
+title('The Circular Aperture');
