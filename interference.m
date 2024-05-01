@@ -84,7 +84,15 @@ function fourierInterference(ap,apName)
     crossSection(centeredI);
     hold on
     % Put plot parameters here
-    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern']);
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (x-axis)']);
+
+    hold off
+
+    % Draw Intensity Cross Sections of the Diffraction Pattern
+    crossSection(centeredI.');
+    hold on
+    % Put plot parameters here
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (y-axis)']);
 
     hold off
 end
@@ -105,7 +113,7 @@ function crossSection(pattern)
     figure
     sideLength = size(pattern(:,1));
     x = 1:1:sideLength(1);
-    y = pattern(sideLength(1),:);
+    y = pattern((sideLength(1)+1)/2,:);
     plot(x,y,LineWidth=1);
     
     xlim([0 sideLength(1)]);
