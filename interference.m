@@ -17,35 +17,35 @@ function interference()
     % Square Aperture
     buttons{1,1}.Text = 'Square';
     buttons{1,1}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(squareAP());
+        fourierInterference(squareAP(),'Square');
     % Single Slit Aperture
     buttons{1,2}.Text = 'Single Slit';
     buttons{1,2}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(singleSlitAP());
+        fourierInterference(singleSlitAP(),'Single Slit');
     % double Slit Aperture
     buttons{1,3}.Text = 'Double Slit';
     buttons{1,3}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(doubleSlitAP());
+        fourierInterference(doubleSlitAP(),'Double Slit');
     % circular Aperture
     buttons{1,4}.Text = 'Circlar';
     buttons{1,4}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(circleAP());
+        fourierInterference(circleAP(),'Circular');
     % triangular Aperture
     buttons{1,5}.Text = 'Triangular';
     buttons{1,5}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(triangleAP());
+        fourierInterference(triangleAP(),'Triangular');
     % ring Aperture
     buttons{2,1}.Text = 'Ring';
     buttons{2,1}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(qiuranRingAP());
+        fourierInterference(qiuranRingAP(),'Ring');
     % grid Aperture
     buttons{2,2}.Text = 'Grid';
     buttons{2,2}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(gridAP());
+        fourierInterference(gridAP(),'Grid');
     % triangular Aperture
     buttons{2,3}.Text = 'Triangular Ring';
     buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(triangleRingAP());
+        fourierInterference(triangleRingAP(),'Triangular Ring');
     % mengru's AP (pending)
     buttons{2,4}.Text = 'Null';
     % Quit button
@@ -56,20 +56,35 @@ end
 
 %% Interference Calculation & Plot
 
-function fourierInterference(ap)
-    I=(abs(fftshift(fft2(ap))).^2); % Calculate intensity
-    I=I.^0.3; % Adjust brightness
-    draw(I);
+function fourierInterference(ap,apName)
+    I = (abs(fftshift(fft2(ap))).^2); % Calculate intensity
+    centeredI = I(2376:2626,2376:2626);
+
+    brightI = I.^0.3; % Adjust brightness
+    brightCenteredI = centeredI.^0.3;
+
+    % Draw Full-Field Far Field Diffraction Pattern
+    draw(brightI);
     hold on
     % Put plot parameters here
-    title('Normal');
+    title(['Full-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
 
     hold off
     
-    draw(I(2376:2626,2376:2626));
+    % Draw Center-Field Far Field Diffraction Pattern
+    
+    draw(brightCenteredI);
     hold on
     % Put plot parameters here
-    title('Enlarged');
+    title(['Center-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
+
+    hold off
+
+    % Draw Intensity Cross Sections of the Diffraction Pattern
+    crossSection(centeredI);
+    hold on
+    % Put plot parameters here
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern']);
 
     hold off
 end
@@ -84,6 +99,16 @@ function draw(pattern)
     axis equal % Set the display scale of the axes
     [x,y] = size(pattern);
     axis([0 x 0 y]) % Set axes limits to size of aperture field
+end
+
+function crossSection(pattern)
+    figure
+    sideLength = size(pattern(:,1));
+    x = 1:1:sideLength(1);
+    y = pattern(sideLength(1),:);
+    plot(x,y);
+    
+    xlim([0 sideLength(1)]);
 end
 
 %% Apertures
