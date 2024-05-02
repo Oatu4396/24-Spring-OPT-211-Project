@@ -47,7 +47,9 @@ function interference()
     buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(triangleRingAP(),'Triangular Ring');
     % mengru's AP (pending)
-    buttons{2,4}.Text = 'Null';
+    buttons{2,4}.Text = 'Elliptical';
+    buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
+        fourierInterference(ellipseAP(),'Elliptical');
     % Quit button
     buttons{2,5}.Text = 'Quit';
     buttons{2,5}.ButtonPushedFcn = @(btn,event) ...
@@ -339,3 +341,17 @@ function ap = qiuranRingAP
     ap(r2 <= distances & distances <= r1) = 1;
     return
 end
+
+function ap = ellipseAP
+    % Define Aperture field
+    apl=5000; % Size of the aperture field 
+    ap=zeros(apl); % Define actual aperture plane
+
+    % Define ellipse aperture
+    r=170;a=0.5;b=1.3;
+    [xx, yy] = meshgrid(1:apl, 1:apl);
+    distances = (((xx - apl/2)./a).^2 + ((yy - apl/2)./b).^2).^0.5;
+    ap(distances <= r)=1;
+    return
+end
+

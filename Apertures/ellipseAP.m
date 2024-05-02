@@ -1,4 +1,3 @@
-% Draw A Circular Aperture:
 function ap = ellipseAP
     % Define Aperture field
     apl=5000; % Size of the aperture field 
