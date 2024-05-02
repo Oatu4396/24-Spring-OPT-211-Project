@@ -48,7 +48,7 @@ function interference()
         fourierInterference(triangleRingAP(),'Triangular Ring');
     % mengru's AP (pending)
     buttons{2,4}.Text = 'Elliptical';
-    buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
+    buttons{2,4}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(ellipseAP(),'Elliptical');
     % Quit button
     buttons{2,5}.Text = 'Quit';
