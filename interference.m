@@ -27,7 +27,7 @@ function interference()
     buttons{1,3}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(doubleSlitAP(),'Double Slit');
     % circular Aperture
-    buttons{1,4}.Text = 'Circlar';
+    buttons{1,4}.Text = 'Circular';
     buttons{1,4}.ButtonPushedFcn = @(btn,event) ...
         fourierInterference(circleAP(),'Circular');
     % triangular Aperture
