@@ -33,7 +33,7 @@ function interference()
     % triangular Aperture
     buttons{1,5}.Text = 'Triangular';
     buttons{1,5}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(triangleAP(),'Triangular');
+        triangularFourierInterference(triangleAP(),'Triangular');
     % ring Aperture
     buttons{2,1}.Text = 'Ring';
     buttons{2,1}.ButtonPushedFcn = @(btn,event) ...
@@ -45,7 +45,7 @@ function interference()
     % triangular Aperture
     buttons{2,3}.Text = 'Triangular Ring';
     buttons{2,3}.ButtonPushedFcn = @(btn,event) ...
-        fourierInterference(triangleRingAP(),'Triangular Ring');
+        triangularFourierInterference(triangleRingAP(),'Triangular Ring');
     % mengru's AP (pending)
     buttons{2,4}.Text = 'Elliptical';
     buttons{2,4}.ButtonPushedFcn = @(btn,event) ...
@@ -70,6 +70,9 @@ function fourierInterference(ap,apName)
     hold on
     % Put plot parameters here
     title(['Full-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
+    xlabel('Position (x-axis) [Pixels]')
+    ylabel('Position (y-axis) [Pixels]')
+    colorbar
 
     hold off
     
@@ -79,6 +82,9 @@ function fourierInterference(ap,apName)
     hold on
     % Put plot parameters here
     title(['Center-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
+    xlabel('Position (x-axis) [Pixels]')
+    ylabel('Position (y-axis) [Pixels]')
+    colorbar
 
     hold off
 
@@ -95,6 +101,65 @@ function fourierInterference(ap,apName)
     hold on
     % Put plot parameters here
     title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (y-axis)']);
+
+    hold off
+end
+
+function triangularFourierInterference(ap,apName)
+    I = abs(fftshift(fft2(ap))).^2; % Calculate intensity
+    centeredI = I(2376:2626,2376:2626);
+
+    brightI = I.^0.25; % Adjust brightness
+    brightCenteredI = centeredI.^0.25;
+
+    % Draw Full-Field Far Field Diffraction Pattern
+    draw(brightI);
+    hold on
+    % Put plot parameters here
+    title(['Full-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
+    xlabel('Position (x-axis) [Pixels]')
+    ylabel('Position (y-axis) [Pixels]')
+    colorbar
+
+    hold off
+    
+    % Draw Center-Field Far Field Diffraction Pattern
+    
+    draw(brightCenteredI);
+    hold on
+    % Put plot parameters here
+    title(['Center-Field Far Field Diffraction Pattern of ' apName ' Aperture']);
+    xlabel('Position (x-axis) [Pixels]')
+    ylabel('Position (y-axis) [Pixels]')
+    colorbar
+
+    hold off
+
+    % Draw x-axis Intensity Cross Sections of the Diffraction Pattern
+    crossSection(centeredI);
+    hold on
+    % Put plot parameters here
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (x-axis)']);
+
+    hold off
+
+    % Draw y-axis Intensity Cross Sections of the Diffraction Pattern
+    crossSection(centeredI.');
+    hold on
+    % Put plot parameters here
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (y-axis)']);
+
+    hold off
+
+    % Rotate matrix
+    theta = 30;
+    rotatedI = imrotate(centeredI,-theta,'bilinear','crop');
+
+    % Draw rotated Intensity Cross Sections of the Diffraction Pattern
+    crossSection(rotatedI);
+    hold on
+    % Put plot parameters here
+    title(['Intensity Cross Section of the ' apName ' Aperture Diffraction Pattern (30 degree axis)']);
 
     hold off
 end
