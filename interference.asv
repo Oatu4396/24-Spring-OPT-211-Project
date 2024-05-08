@@ -1,17 +1,11 @@
-% OPT 211 Spring 24
-% Tianqiao Zhang, Mengru Zhang, Qiuran Zhu, Harvey Xing
-%
 % Run the code and there will be a pop-up UI window that allows you to
 % select the aperture you want, The code will then generate 4-5 figures
-% showing the interference pattern of the aperture.
-% Figures including normal interference pattern, one center-enlarged, and
-% the cross section plot for x and y axis.
+% showing the interference pattern of the aperture. For triangular
+% apertures, there will be 5 figures, and one of them is the rotate one
+% showing the cross-section of the axis of interest pattern, which is
+% rotated by 30 degrees.
 %
-% For the triangular apertures, there will be 5 figures, and one of them is
-% the rotate one showing the cross-section of the axis of interest pattern,
-% which is rotated by 30 degrees.
-% If the 5th image didn't show up, check your matlab installation for
-% Image Processing Toolbox.
+% Note that the 
 
 %% Aperture Selection UI
 
